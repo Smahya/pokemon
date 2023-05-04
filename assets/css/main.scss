@@ -1,0 +1,54 @@
+@import url("https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@100;200;300;400;500;600;700;800&display=swap");
+
+html {
+  --white: #ffffff;
+  --black: #000000;
+  --black-500: #0D131A;
+  --black-400: #1e1d21;
+  --black-300: #27262a;
+  --black-200: #35343b;
+  --black-100: #888596;
+  --primary-purple: #7a4df0;
+  --primary-blue: #488bec;
+  --clash: 'Clash Display';
+  --general: 'General Sans';
+  --inter: 'Inter';
+  // --color: #DE527F;
+}
+
+body {
+  // font-weight: 400;
+  font-family: 'Clash Display','General Sans', 'Courier New', Courier, monospace, Helvetica, sans-serif;                                     
+}
+
+p, h1,h2,h3,h4,h5,h6 {
+  margin: 0;
+  padding: 0;
+}
+
+.noise {
+  background: url('@/assets/images/noise.png');
+}
+
+.overlay {
+  background: url('@/assets/images/noise.png');
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  opacity: 0.9;
+ }
+
+.flex {
+  display: flex;
+}
+.items-center {
+  align-items: center;
+}
+.justify-center{
+  justify-content: center;
+}
+.justify-between {
+  justify-content: space-between;
+}
