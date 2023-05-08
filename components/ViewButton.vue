@@ -1,16 +1,16 @@
 <script setup>
 import eye from '@/assets/icons/eye.svg';
-import { useThemeMode } from '~/composables/useTheme';
 
-const colorMode = useColorMode();
-const { defaultMode, } = useThemeMode(colorMode);
+const emit = defineEmits([
+ "view:details"
+]);
 
-const computedColor = computed(() => {
- return defaultMode.value.color
-});
+function handlePreview() {
+ emit("view:details");
+}
 </script>
 <template>
- <button class="view--btn" type="button">
+ <button class="view--btn" type="button" @click="handlePreview">
   View Pokemon
   <img :src="eye" alt="eye icon" />
  </button>
@@ -21,7 +21,7 @@ const computedColor = computed(() => {
  border: none;
  padding: 12px 20px;
  width: 100%;
- background-color: v-bind(computedColor);
+ background-color: var(--color);
  border-radius: 14px;
  font-family: var(--general);
  font-weight: 400;

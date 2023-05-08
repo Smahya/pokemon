@@ -1,46 +1,38 @@
 <script setup>
-import { useMainStore } from "@/store/index";
 import { useThemeMode } from '~/composables/useTheme';
-import { useRoute } from 'nuxt/app';
+import { useRoute, useRouter } from 'nuxt/app';
 
 const route = useRoute();
+const router = useRouter();
 const colorMode = useColorMode();
 const { show, defaultMode, updateVal } = useThemeMode(colorMode);
-const store = useMainStore();
 
-// const offset = ref(0);
-// const limit = ref(500);
 const searchText = ref(route.query.search);
 
 function openModal() {
  show.value = true;
 }
+
 const computedColor = computed(() => {
  return defaultMode.value.color
 });
 
-const searchPokemon = async () => {
- const res = store.pokemonList.filter((poke) => {
-  console.log(poke.name)
-  return poke.name.toLowerCase() === searchText.value.toLowerCase()
- })
- console.log(res)
-};
-// watchEffect(() => {
-//  searchPokemon()
-// });
+watch(searchText, (oldVal, newVal) => {
+ if (newVal) {
+  router.replace({ path: '/search', query: { search: newVal } })
+ }
+});
 </script>
 
 <template>
- <div class="navbar flex items-center justify-between">
-  <div class="navbar-right flex items-center">
+ <div class="navbar noise">
+  <div class="navbar-left flex items-center">
    <div class="poke-wrap">
     <img src="@/assets/images/Poke.png" alt="picture" class="poke" />
    </div>
    <p class="text-lg">Pok<span class="e">e</span><span class="book">book</span></p>
   </div>
-  <navbar-search :modelValue="searchText" @update:modelValue="newValue => searchText = newValue"
-   :searchItem="searchPokemon" />
+  <navbar-search :modelValue="searchText" @update:modelValue="newValue => searchText = newValue" class="navbar-search" />
   <div class="color-comp flex items-center justify-center" @click="openModal">
    <button class="inner">
    </button>
@@ -51,18 +43,29 @@ const searchPokemon = async () => {
 
 <style lang="scss" scoped>
 .navbar {
- background: #FFFFFF;
+ background-color: var(--white);
  box-shadow: 0px 14px 24px rgba(0, 0, 0, 0.05);
- background: url('@/assets/images/noise.png');
- background-size: contain;
- opacity: 1;
  padding: 0.75rem 1rem;
+ display: flex;
+ align-items: center;
+ justify-content: space-between;
+ position: sticky;
+ top: 0;
+ z-index: 1000;
 
- @media (min-width: 930px) {
-  padding: 1.0625rem 3.1875rem;
+ .navbar-search {
+  display: none;
  }
 
- &-right {
+ @media (min-width: 1110px) {
+  padding: 1.0625rem 3.1875rem;
+
+  .navbar-search {
+   display: flex;
+  }
+ }
+
+ &-left {
   position: relative;
   gap: 1rem;
 

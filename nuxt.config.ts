@@ -11,6 +11,7 @@ export default defineNuxtConfig({
     classSuffix: '-mode',
     storageKey: 'nuxt-color-mode'
   },
+  // ssr: false,
   css: [
     // SCSS file in the project
     "@/assets/css/main.scss",

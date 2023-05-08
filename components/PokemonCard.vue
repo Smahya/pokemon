@@ -3,6 +3,9 @@
 const props = defineProps({
  pokemon: {
   type: Object
+ },
+ view: {
+  type: Function,
  }
 });
 
@@ -34,8 +37,8 @@ const pokemonTypes = {
 </script>
 
 <template>
- <div class="pokemon__card">
-  <div class="pokemon__card--top">
+ <div class="pokemon__card noise">
+  <div class="pokemon__card--top noise">
    <img :src="pokemon.sprites.other.dream_world.front_default" alt="picture">
   </div>
   <div class="pokemon__card--bottom">
@@ -47,7 +50,7 @@ const pokemonTypes = {
    </div>
   </div>
   <div class="view__btn">
-   <ViewButton />
+   <ViewButton @view:details="props.view(pokemon.name)" />
   </div>
  </div>
 </template>
@@ -64,7 +67,7 @@ const pokemonTypes = {
  cursor: pointer;
 
  .view__btn {
-  width: calc(100% - 1.25rem);
+  width: 100%;
   padding: 0.8rem 0.625rem;
   background: #FFFFFF;
   border-radius: 0 0 20px 20px;
@@ -92,7 +95,7 @@ const pokemonTypes = {
    width: 100%;
    height: 100%;
    transform: translateY(-3rem);
-   z-index: 100;
+   z-index: 5;
   }
  }
 

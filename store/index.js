@@ -4,47 +4,62 @@ import axios from "axios"
 
 export const useMainStore = defineStore('main', () => {
   const loading = ref(false);
+  const mainList = ref([]);
   const metaData = ref({});
   const pokemonList = ref([]);
-  const searchResult = ref([]);
   const searchKey = ref('');
-
-  const searchPokemon = async ({ search }) => {
-    loading.value = true;
-    const result = pokemonList.value.filter((pokemon) => {
-      return pokemon.name.toLowerCase() === search.toLowerCase()
-    })
-    console.log(result);
-    loading.value = false;
-    pokemonList.value = result
-  }
 
   const initialList = computed(() => {
     return pokemonList?.value?.slice(0, 8);
   })
 
-  const fetchPokemon = async ({ offset = 0, limit = 20}) => {
+  function getPokemonList(details) {
+    loading.value = true;
+    Promise.all(details)
+      .then(responses => {
+        const pokemonDetails = responses.map(response => response.data);
+        pokemonList.value = pokemonDetails;
+      })
+      .catch(error => {
+        return error
+      }).finally(() => {
+        loading.value = false;
+      })
+  }
+
+  const searchPokemon = async (search, limit = 8) => {
+    loading.value = true;
+    const searchResult = mainList.value.filter((pokemon) => {
+      return pokemon.name.includes(search)
+    })
+    const sliceResult = searchResult?.slice(0, 8);
+    const pokemonDetailsPromises = sliceResult.map(pokemon => axios.get(pokemon.url));
+    getPokemonList(pokemonDetailsPromises);
+    loading.value = true;
+  }
+
+  const fetchPokemon = async (offset = 0, limit = 8) => {
+    loading.value = true;
+    const result = mainList.value.slice(offset, limit)
+    const pokemonDetailsPromises = result.map(pokemon => axios.get(pokemon.url));
+    getPokemonList(pokemonDetailsPromises)
+  };
+
+  const fetchAllPokemon = async ({ offset = 0, limit = 8, pageSize }) => {
     loading.value = true;
     return instance.get(`/?offset=${offset}&limit=${limit}`)
       .then(async response => {
-        const result = response.data.results;
-        const pokemonDetailsPromises = result.map(pokemon => axios.get(pokemon.url));
-        Promise.all(pokemonDetailsPromises)
-          .then(responses => {
-            const pokemonDetails = responses.map(response => response.data);
-            // const result = search.length > 0 ? pokemonList.value.filter((pokemon) => pokemon.name.toLowerCase() === searchKey.toLowerCase()) : pokemonDetails
-            pokemonList.value = pokemonDetails;
-          })
-          .catch(error => {
-            return error
-          });
+        const { results, ...rest } = response.data;
+        mainList.value = results;
+        metaData.value = rest;
       }).catch(err => {
         return err
       }).finally(() => {
-        loading.value = false
+        fetchPokemon(offset, pageSize)
+        loading.value = true;
       })
   };
 
 
-  return { pokemonList, metaData, initialList, loading, searchKey, searchResult, fetchPokemon, searchPokemon }
+  return { pokemonList, metaData, initialList, loading, searchKey, fetchPokemon, searchPokemon, fetchAllPokemon }
 })

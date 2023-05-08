@@ -2,14 +2,12 @@
 import { useRouter } from 'nuxt/app';
 const searchText = ref('');
 
+
 const router = useRouter();
 function searchItem() {
  !searchText.length ? null : router.push({ name: `/search?${searchText}` })
 }
 
-watchEffect(() => {
- console.log(searchText.value)
-});
 </script>
 <script>
 + definePageMeta({ layout: 'custom' });

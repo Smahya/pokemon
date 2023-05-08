@@ -16,6 +16,12 @@ html {
   // --color: #DE527F;
 }
 
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 body {
   // font-weight: 400;
   font-family: 'Clash Display','General Sans', 'Courier New', Courier, monospace, Helvetica, sans-serif;                                     
@@ -32,12 +38,8 @@ p, h1,h2,h3,h4,h5,h6 {
 
 .overlay {
   background: url('@/assets/images/noise.png');
-  position: fixed;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
   opacity: 0.9;
+  height: 100%;
  }
 
 .flex {
@@ -51,4 +53,9 @@ p, h1,h2,h3,h4,h5,h6 {
 }
 .justify-between {
   justify-content: space-between;
+}
+
+.container {
+  width: calc(100% - 240px);
+  margin: auto;
 }

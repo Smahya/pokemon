@@ -1,9 +1,9 @@
-const colors = 
- {
-  dark: "#DE527F",
-  light: "#39BADF",
-  sepia: "#E1A725",
- };
+const colors =
+{
+ dark: "#DE527F",
+ light: "#39BADF",
+ sepia: "#E1A725",
+};
 import { useThemeStore } from "~/store/theme";
 
 export const useThemeMode = (colorMode) => {
@@ -16,6 +16,7 @@ export const useThemeMode = (colorMode) => {
  })
 
  function updateVal(val) {
+  localStorage.setItem('theme', val.name)
   store.setColorMode(val.name)
   defaultMode.value = {
    ...val
